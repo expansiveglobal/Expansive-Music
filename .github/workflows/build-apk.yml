@@ -51,6 +51,9 @@ jobs:
             -keypass "${{ secrets.KEY_PASSWORD }}" \
             -dname "CN=Dolby Player, OU=App, O=DolbyPlayer, L=Unknown, S=Unknown, C=US"
 
+      - name: Install ImageMagick
+        run: sudo apt-get install -y imagemagick
+
       - name: Generate app icons from source
         run: |
           mkdir -p android/app/src/main/res/drawable
