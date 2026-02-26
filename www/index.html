@@ -27,8 +27,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
 .icon-btn{width:32px;height:32px;border-radius:50%;background:transparent;border:1px solid var(--border);color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:.15s}
 .icon-btn:hover{border-color:var(--acc);color:var(--acc)}
-
-/* MASTER ON/OFF BUTTON */
 .master-btn{display:flex;align-items:center;gap:7px;padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--sub);font-size:10px;font-weight:700;cursor:pointer;transition:.2s;letter-spacing:.5px;white-space:nowrap}
 .master-btn:hover{border-color:var(--acc);color:var(--acc2)}
 .master-btn.on{background:linear-gradient(90deg,rgba(124,92,252,.2),rgba(224,64,251,.2));border-color:var(--imm);color:var(--imm)}
@@ -86,7 +84,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .badge-p{color:var(--acc2);border-color:rgba(124,92,252,.3);background:rgba(124,92,252,.07)}
 .badge-o{color:var(--acO);border-color:rgba(249,115,22,.3);background:rgba(249,115,22,.07)}
 .badge-src{color:var(--text);border-color:var(--border);background:rgba(255,255,255,.04)}
-.badge-imm{color:var(--imm);border-color:rgba(224,64,251,.3);background:rgba(224,64,251,.07);display:none}
 .seek-wrap{margin-bottom:10px}
 .seek{width:100%;-webkit-appearance:none;appearance:none;height:3px;border-radius:2px;background:var(--border);outline:none;cursor:pointer;accent-color:var(--acc)}
 .seek::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--acc);cursor:pointer;box-shadow:0 0 6px rgba(124,92,252,.6)}
@@ -110,32 +107,25 @@ canvas#viz{width:100%;height:56px;border-radius:10px;background:rgba(0,0,0,.4);d
 .drop-zone{border:2px dashed var(--border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:.2s;font-size:10px;color:var(--sub)}
 .drop-zone:hover,.drop-zone.drag{border-color:var(--acc);background:rgba(124,92,252,.04);color:var(--acc2)}
 
-/* ── IMMERSION CARD (Now Playing) ── */
+/* ── SOUNDSTAGE CARD ── */
 .imm-card{background:linear-gradient(135deg,rgba(224,64,251,.06),rgba(124,92,252,.06));border:1px solid rgba(224,64,251,.2);border-radius:var(--radius);padding:16px;margin-bottom:16px;position:relative;overflow:hidden;transition:.3s}
 .imm-card.active{border-color:rgba(224,64,251,.45);box-shadow:0 0 24px rgba(224,64,251,.08)}
 .imm-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(224,64,251,.07),transparent 70%);pointer-events:none}
 .imm-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .imm-title{font-size:13px;font-weight:800;color:var(--imm);letter-spacing:.3px}
 .imm-spec{font-size:9px;padding:2px 7px;border-radius:4px;font-weight:700;border:1px solid rgba(224,64,251,.35);color:var(--imm);background:rgba(224,64,251,.09);letter-spacing:1px}
-.imm-stage-wrap{display:flex;gap:20px;align-items:center}
-.imm-stage{position:relative;width:180px;height:180px;flex-shrink:0}
-canvas#stageViz{width:180px;height:180px;border-radius:50%;display:block}
-.imm-stage-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--sub);white-space:nowrap;font-weight:600;letter-spacing:1px}
-.imm-controls{flex:1;display:flex;flex-direction:column;gap:9px}
-.imm-presets{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:2px}
-.imm-preset{padding:5px 11px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid rgba(224,64,251,.25);color:var(--sub);background:transparent;cursor:pointer;transition:.15s}
-.imm-preset:hover{color:var(--imm);border-color:var(--imm)}
-.imm-preset.on{color:#fff;background:var(--imm);border-color:var(--imm)}
+/* Soundstage meter bar */
+.ss-meter-wrap{margin-top:10px}
+.ss-meter-track{position:relative;height:36px;background:rgba(0,0,0,.35);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.ss-meter-fill{position:absolute;top:0;left:0;height:100%;border-radius:10px;transition:width .12s;background:linear-gradient(90deg,rgba(124,92,252,.5),rgba(224,64,251,.8),rgba(249,115,22,.6))}
+.ss-meter-labels{display:flex;justify-content:space-between;font-size:8px;color:var(--sub);margin-top:5px;padding:0 2px;font-weight:600;letter-spacing:.8px}
+.ss-stage-hint{font-size:9px;color:var(--sub);margin-top:8px;line-height:1.7;font-style:italic}
+.imm-controls{display:flex;flex-direction:column;gap:9px}
 .imm-row{display:flex;align-items:center;gap:8px}
-.imm-lbl{font-size:9px;color:var(--sub);width:76px;flex-shrink:0;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.imm-lbl{font-size:9px;color:var(--sub);width:82px;flex-shrink:0;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
 .imm-sl{flex:1;-webkit-appearance:none;height:3px;border-radius:2px;outline:none;cursor:pointer;background:linear-gradient(90deg,var(--imm) var(--p,0%),var(--border) var(--p,0%))}
 .imm-sl::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--imm);cursor:pointer;box-shadow:0 0 5px rgba(224,64,251,.5)}
 .imm-val{font-size:10px;color:var(--text);min-width:32px;text-align:right;font-weight:600}
-.imm-layers{display:flex;gap:4px;margin-top:2px}
-.imm-layer{flex:1;height:18px;border-radius:4px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--sub);font-weight:700;letter-spacing:.5px;transition:.2s}
-.imm-layer.bed{background:rgba(124,92,252,.1);border-color:rgba(124,92,252,.3);color:var(--acc2)}
-.imm-layer.top{background:rgba(224,64,251,.1);border-color:rgba(224,64,251,.3);color:var(--imm)}
-.imm-layer.sub{background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.3);color:var(--acO)}
 
 /* ── LIBRARY ── */
 .lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;padding:20px}
@@ -207,7 +197,7 @@ canvas#stageViz{width:180px;height:180px;border-radius:50%;display:block}
 .vivid-display{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--acc),var(--acO),#f59e0b);margin-top:6px;transition:opacity .3s}
 canvas#peq{width:100%;height:110px;display:block;background:#05050e;border-radius:9px;margin-bottom:8px;cursor:crosshair}
 .peq-bands{display:flex;gap:4px;overflow-x:auto;padding-bottom:3px;margin-bottom:8px}
-.peq-band{background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:5px 4px;min-width:58px;text-align:center;cursor:pointer;transition:.12s;flex-shrink:0;font-size:9px}
+.peq-band{background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:5px 4px;min-width:58px;text-align:center;cursor:pointer;transition:.12px;flex-shrink:0;font-size:9px}
 .peq-band:hover,.peq-band.sel{border-color:var(--acc);background:rgba(124,92,252,.1)}
 .peq-band .pf{color:var(--sub)}
 .peq-band .pg{font-size:11px;font-weight:700;margin-top:1px}
@@ -266,9 +256,8 @@ input[type=file]{display:none}
   </nav>
   <div class="topbar-right">
     <span id="badge-nr" style="display:none;font-size:9px;padding:2px 7px;border-radius:5px;background:rgba(16,185,129,.1);color:var(--acG);border:1px solid rgba(16,185,129,.3);font-weight:700">NR</span>
-    <span id="badge-imm" style="display:none;font-size:9px;padding:2px 7px;border-radius:5px;background:rgba(224,64,251,.1);color:var(--imm);border:1px solid rgba(224,64,251,.3);font-weight:700">9.1.4</span>
+    <span id="badge-ss" style="display:none;font-size:9px;padding:2px 7px;border-radius:5px;background:rgba(224,64,251,.1);color:var(--imm);border:1px solid rgba(224,64,251,.3);font-weight:700">STAGE</span>
     <span id="badge-vivid" style="display:none;font-size:9px;padding:2px 7px;border-radius:5px;background:rgba(124,92,252,.1);color:var(--acc2);border:1px solid rgba(124,92,252,.3);font-weight:700">VIVID</span>
-    <!-- MASTER ON/OFF BUTTON -->
     <button class="master-btn" id="masterBtn" onclick="toggleMaster()">
       <span class="dot"></span><span id="masterLbl">DSP OFF</span>
     </button>
@@ -278,7 +267,6 @@ input[type=file]{display:none}
 </div>
 
 <div class="body">
-<!-- SIDEBAR -->
 <div class="sidebar">
   <div class="lib-header">
     <span class="lib-title">Library</span>
@@ -295,7 +283,6 @@ input[type=file]{display:none}
   <input type="file" id="fileIn" multiple accept="audio/*" onchange="onFileIn(event)">
 </div>
 
-<!-- PAGES -->
 <div class="main">
 
 <!-- NOW PLAYING -->
@@ -308,7 +295,6 @@ input[type=file]{display:none}
       <div class="np-badges">
         <span class="badge badge-g">WAV 24-bit / 384kHz</span>
         <span class="badge badge-p">18,432 kbps</span>
-        <span class="badge badge-o" id="immBadgeNP" style="display:none">9.1.4 Immersion</span>
         <span class="badge badge-src" id="srcBadge">LOCAL</span>
       </div>
       <div class="seek-wrap">
@@ -350,44 +336,31 @@ input[type=file]{display:none}
     </div>
   </div>
 
-  <!-- ══ IMMERSION MODE — replaces 7.1 surround ══ -->
+  <!-- ══ SOUNDSTAGE CARD — psychoacoustic stereo widening ══ -->
   <div class="imm-card" id="immCard">
     <div class="imm-header">
-      <span style="font-size:20px">🌐</span>
-      <span class="imm-title">Immersion Mode</span>
-      <span class="imm-spec">9.1.4</span>
+      <span style="font-size:20px">🎧</span>
+      <span class="imm-title">Soundstage</span>
+      <span class="imm-spec">PSYCHOACOUSTIC</span>
       <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
         <span style="font-size:10px;color:var(--sub);font-weight:600" id="immLbl">Off</span>
         <label class="tog"><input type="checkbox" id="immCheck" onchange="onImmToggle(this)"><div class="tog-sl" style="background:var(--border)"></div></label>
         <style>#immCheck:checked+.tog-sl{background:var(--imm)!important}</style>
       </div>
     </div>
-    <div class="imm-stage-wrap">
-      <div class="imm-stage">
-        <canvas id="stageViz" width="180" height="180"></canvas>
-        <div class="imm-stage-label">SOUNDSTAGE · 9.1.4</div>
+    <div class="imm-controls">
+      <div class="imm-row">
+        <span class="imm-lbl">Space</span>
+        <input type="range" class="imm-sl" id="ssSpace" min="0" max="100" value="0" oninput="onSSParam()">
+        <span class="imm-val" id="ssSpaceV">0%</span>
       </div>
-      <div class="imm-controls">
-        <div class="imm-presets">
-          <button class="imm-preset on"  onclick="setImmPreset('music',this)">Music</button>
-          <button class="imm-preset"     onclick="setImmPreset('cinema',this)">Cinema</button>
-          <button class="imm-preset"     onclick="setImmPreset('concert',this)">Concert</button>
-          <button class="imm-preset"     onclick="setImmPreset('arena',this)">Arena</button>
-          <button class="imm-preset"     onclick="setImmPreset('studio',this)">Studio</button>
-          <button class="imm-preset"     onclick="setImmPreset('space',this)">Space</button>
-        </div>
-        <div class="imm-row"><span class="imm-lbl">Radius</span>   <input type="range" class="imm-sl" id="immRadius" min="0" max="100" value="55" oninput="onImmParam()"><span class="imm-val" id="immRadiusV">55</span></div>
-        <div class="imm-row"><span class="imm-lbl">Rotation</span> <input type="range" class="imm-sl" id="immRot"    min="0" max="360" value="0"  oninput="onImmParam()"><span class="imm-val" id="immRotV">0°</span></div>
-        <div class="imm-row"><span class="imm-lbl">Height</span>   <input type="range" class="imm-sl" id="immHeight" min="0" max="100" value="40" oninput="onImmParam()"><span class="imm-val" id="immHeightV">40</span></div>
-        <div class="imm-row"><span class="imm-lbl">Diffusion</span><input type="range" class="imm-sl" id="immDiff"   min="0" max="100" value="45" oninput="onImmParam()"><span class="imm-val" id="immDiffV">45</span></div>
-        <div class="imm-row"><span class="imm-lbl">LFE Gain</span> <input type="range" class="imm-sl" id="immLFE"    min="0" max="100" value="70" oninput="onImmParam()"><span class="imm-val" id="immLFEV">70</span></div>
-        <div class="imm-row"><span class="imm-lbl">Wet Mix</span>  <input type="range" class="imm-sl" id="immWet"    min="0" max="100" value="55" oninput="onImmParam()"><span class="imm-val" id="immWetV">55</span></div>
-        <div class="imm-layers">
-          <div class="imm-layer bed">BED · 9ch</div>
-          <div class="imm-layer top">TOP · 4ch</div>
-          <div class="imm-layer sub">LFE · 1ch</div>
+      <div class="ss-meter-wrap">
+        <div class="ss-meter-track"><div class="ss-meter-fill" id="ssMeterFill" style="width:0%"></div></div>
+        <div class="ss-meter-labels">
+          <span>TIGHT STEREO</span><span>WIDE</span><span>EXPANSIVE</span><span>IMMERSIVE</span>
         </div>
       </div>
+      <div class="ss-stage-hint" id="ssHint">Move the slider to open up the soundstage.</div>
     </div>
   </div>
 
@@ -470,6 +443,7 @@ input[type=file]{display:none}
         <div class="s-row"><span class="s-label">Treble</span><input type="range" class="s-slider" id="slTreble" min="-20" max="20" value="0" step="1" oninput="onTone('treble',this)"><span class="s-val" id="vTreble">0</span></div>
         <div class="s-row"><span class="s-label">Mids</span>  <input type="range" class="s-slider" id="slMids"   min="-20" max="20" value="0" step="1" oninput="onTone('mids',this)">  <span class="s-val" id="vMids">0</span></div>
         <div class="s-row"><span class="s-label">Bass</span>  <input type="range" class="s-slider" id="slBass"   min="-20" max="20" value="0" step="1" oninput="onTone('bass',this)">  <span class="s-val" id="vBass">0</span></div>
+        <div class="s-desc">Bass includes punch shaping &amp; rumble clarity.</div>
       </div>
 
       <div class="s-card" id="sc-boost">
@@ -529,7 +503,7 @@ input[type=file]{display:none}
     <div class="settings-title">💾 Export — 24-bit / 384kHz WAV</div>
     <div class="s-card">
       <div style="font-size:10px;color:var(--sub);line-height:1.9;margin-bottom:4px">
-        Target: <strong style="color:var(--acG)">WAV 24-bit PCM · 384kHz</strong> · <strong style="color:var(--acc2)">18,432 kbps</strong> · 9.1.4 HRTF binaural mixdown · Full DSP chain applied offline.
+        Target: <strong style="color:var(--acG)">WAV 24-bit PCM · 384kHz</strong> · <strong style="color:var(--acc2)">18,432 kbps</strong> · Full DSP chain applied offline.
       </div>
       <div class="export-row">
         <button class="ex-btn primary" onclick="exportWAV()">⬇ Export WAV (24-bit / 384kHz)</button>
@@ -569,9 +543,9 @@ input[type=file]{display:none}
     </div>
   </div>
 
-</div><!-- /settings -->
-</div><!-- /main -->
-</div><!-- /body -->
+</div>
+</div>
+</div>
 
 <!-- MODAL -->
 <div class="modal-bg" id="modalBg" style="display:none" onclick="if(event.target===this)closeModal()">
@@ -592,38 +566,6 @@ input[type=file]{display:none}
 'use strict';
 const SR=384000,BITS=24,OUT_CH=2;
 const AUDIO_EXTS=/\.(mp3|flac|wav|aiff?|ogg|opus|m4a|aac|wma|alac|ape|dsf|wv|mka)$/i;
-
-// ══ 9.1.4 CHANNEL LAYOUT ══
-// 9 bed (horizontal ring) + 4 top (overhead) + 1 LFE
-const CH_BED=[
-  {n:'L',   az:-30,  el:0,  g:1.00},
-  {n:'C',   az:0,    el:0,  g:0.90},
-  {n:'R',   az:30,   el:0,  g:1.00},
-  {n:'Lss', az:-60,  el:0,  g:0.92},
-  {n:'Rss', az:60,   el:0,  g:0.92},
-  {n:'Lsr', az:-100, el:0,  g:0.88},
-  {n:'Rsr', az:100,  el:0,  g:0.88},
-  {n:'Lrr', az:-150, el:0,  g:0.85},
-  {n:'Rrr', az:150,  el:0,  g:0.85},
-];
-const CH_TOP=[
-  {n:'Ltf', az:-30,  el:45, g:0.80},
-  {n:'Rtf', az:30,   el:45, g:0.80},
-  {n:'Ltr', az:-110, el:45, g:0.75},
-  {n:'Rtr', az:110,  el:45, g:0.75},
-];
-const CH_LFE={n:'LFE',az:0,el:-20,g:1.05};
-const CH_ALL=[...CH_BED,...CH_TOP,CH_LFE];
-
-// ══ IMMERSION PRESETS ══
-const IMM_PRESETS={
-  music:   {radius:55,height:40,diff:45,lfe:70, wet:55, rot:0,  decay:2.2,dur:1.4},
-  cinema:  {radius:72,height:60,diff:60,lfe:88, wet:70, rot:0,  decay:1.8,dur:2.8},
-  concert: {radius:80,height:55,diff:75,lfe:75, wet:80, rot:0,  decay:1.4,dur:3.5},
-  arena:   {radius:90,height:70,diff:85,lfe:90, wet:85, rot:0,  decay:1.2,dur:4.2},
-  studio:  {radius:35,height:20,diff:25,lfe:55, wet:35, rot:0,  decay:3.5,dur:0.8},
-  space:   {radius:95,height:90,diff:90,lfe:60, wet:92, rot:45, decay:0.8,dur:6.0},
-};
 
 const STYLE_EQ={
   standard:[{f:80,g:2,q:.7,t:'lowshelf'},{f:200,g:.5,q:1.8,t:'peaking'},{f:2500,g:1.5,q:1.2,t:'peaking'},{f:12e3,g:2,q:.8,t:'highshelf'}],
@@ -650,8 +592,29 @@ let srcNode=null,nrNode=null,toneB=null,toneM=null,toneT=null;
 let styleNodes=[],peqNodes=[];
 let brightNode=null,clarNode=null,clarNode2=null;
 let compNode=null,balanceNode=null,masterGain=null,analyserNode=null;
-let immDryGain=null,immWetGain=null,immConv=null;
-let immPanners=[],immGains=[],immLFEGain=null,immLPF=null;
+
+// ── Bass enhancement nodes (punch + rumble clarity) ──
+let bassTransientNode=null;   // sub-bass HPF to isolate transient punch band
+let bassHarmonicNode=null;    // harmonic exciter: mid-bass boost for punch presence
+let bassRumbleLPF=null;       // LPF to isolate sub-bass rumble (20–60Hz)
+let bassRumbleGain=null;      // gain on rumble band
+let bassRumbleHarmNode=null;  // adds textured overtones to rumble (60Hz peaking)
+let bassRumbleHarm2=null;     // second harmonic layer (90Hz)
+let bassMixGain=null;         // output gain for bass enhancement chain
+let bassWetGain=null;         // wet path gain
+let bassDryGain=null;         // dry path gain (blend)
+
+// ── Soundstage nodes (psychoacoustic M/S widening) ──
+let ssMidGain=null,ssSideGain=null;       // M/S gains
+let ssMidToL=null,ssMidToR=null;          // mid channel splitters
+let ssSideToL=null,ssSideToR=null;        // side channel splitters
+let ssHaasDelay=null;                     // Haas effect delay node
+let ssHaasGain=null;                      // Haas wet gain
+let ssHFWideNode=null;                    // HF widening shelf
+let ssReverbConv=null;                    // short reverb for air
+let ssReverbGain=null;                    // reverb wet mix
+let ssMerger=null,ssSplitter=null;        // channel routing
+let ssOn=false,ssSpace=0;
 
 // ── App state ──
 let tracks=[],folders=[],curIdx=-1,doRepeat=false,doShuffle=false;
@@ -663,9 +626,7 @@ let rgOn=false,rgTarget_=-14;
 let sleepTimer=null,sleepEnd=0;
 let crossfadeTime=0,playbackSpeed=1.0;
 let selBand=0;
-let immOn=false,immPreset='music',immP={...IMM_PRESETS.music};
-let masterOn=false; // master DSP toggle
-let stageAngle=0,stageRAF=null;
+let masterOn=false;
 const CONN={};let activePlatform=null;
 
 let peqBands=[
@@ -676,109 +637,245 @@ let peqBands=[
 ];
 
 // ══════════════════════════════════════════════════════
-// MASTER ON/OFF — toggles every DSP function at once
+// MASTER ON/OFF
 // ══════════════════════════════════════════════════════
 function toggleMaster(){
   masterOn=!masterOn;
-  const btn=document.getElementById('masterBtn');
-  const lbl=document.getElementById('masterLbl');
+  const btn=document.getElementById('masterBtn'),lbl=document.getElementById('masterLbl');
   btn.classList.toggle('on',masterOn);
   lbl.textContent=masterOn?'DSP ON':'DSP OFF';
-
-  // Enable/disable all settings cards visually
   ['sc-style','sc-nr','sc-tone','sc-boost','sc-vivid','sc-rg','sc-peq-section'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.classList.toggle('disabled',!masterOn);
+    const el=document.getElementById(id);if(el)el.classList.toggle('disabled',!masterOn);
   });
-
   if(!masterOn){
-    // Bypass everything: straight wire src → analyser → master → dest
-    if(inited) bypassAllDSP();
-    // Also turn off immersion
-    if(immOn){ document.getElementById('immCheck').checked=false; onImmToggle({checked:false}); }
+    if(inited)bypassAllDSP();
+    if(ssOn){document.getElementById('immCheck').checked=false;onImmToggle({checked:false});}
     document.getElementById('immCard').style.opacity='0.5';
     document.getElementById('immCard').style.pointerEvents='none';
   } else {
     document.getElementById('immCard').style.opacity='1';
     document.getElementById('immCard').style.pointerEvents='';
-    if(inited) connectGraph();
+    if(inited)connectGraph();
   }
 }
 
 function bypassAllDSP(){
-  if(!ACX||!srcNode) return;
-  [srcNode,nrNode,...styleNodes,toneB,toneM,toneT,brightNode,clarNode,clarNode2,
-   ...peqNodes,compNode,balanceNode,
-   immDryGain,immWetGain,immConv,immLPF,immLFEGain,
-   ...immPanners,...immGains,analyserNode,masterGain
-  ].forEach(n=>{if(n)try{n.disconnect();}catch(e){}});
+  if(!ACX||!srcNode)return;
+  const allNodes=[srcNode,nrNode,...styleNodes,toneB,toneM,toneT,
+    bassTransientNode,bassHarmonicNode,bassRumbleLPF,bassRumbleGain,
+    bassRumbleHarmNode,bassRumbleHarm2,bassMixGain,bassWetGain,bassDryGain,
+    brightNode,clarNode,clarNode2,...peqNodes,compNode,balanceNode,
+    ssMidGain,ssSideGain,ssHaasDelay,ssHaasGain,ssHFWideNode,
+    ssReverbConv,ssReverbGain,ssMerger,ssSplitter,analyserNode,masterGain];
+  allNodes.forEach(n=>{if(n)try{n.disconnect();}catch(e){}});
   srcNode.connect(analyserNode);
   analyserNode.connect(masterGain);
-  masterGain.connect(ACX.destination);
   masterGain.gain.value=0.8;
+  masterGain.connect(ACX.destination);
 }
 
 // ══════════════════════════════════════════════════════
 // INIT AUDIO
 // ══════════════════════════════════════════════════════
 function initAudio(){
-  if(inited)return; inited=true;
+  if(inited)return;inited=true;
   ACX=new(window.AudioContext||window.webkitAudioContext)({sampleRate:SR,latencyHint:'playback'});
   srcNode=ACX.createMediaElementSource(AUD);
-  nrNode=ACX.createBiquadFilter(); nrNode.type='highpass'; nrNode.frequency.value=20; nrNode.Q.value=.5;
-  toneB=ACX.createBiquadFilter(); toneB.type='lowshelf'; toneB.frequency.value=200; toneB.gain.value=0;
-  toneM=ACX.createBiquadFilter(); toneM.type='peaking'; toneM.frequency.value=1000; toneM.Q.value=.8; toneM.gain.value=0;
-  toneT=ACX.createBiquadFilter(); toneT.type='highshelf'; toneT.frequency.value=5000; toneT.gain.value=0;
-  brightNode=ACX.createBiquadFilter(); brightNode.type='highshelf'; brightNode.frequency.value=8000; brightNode.gain.value=0;
-  clarNode=ACX.createBiquadFilter(); clarNode.type='peaking'; clarNode.frequency.value=3000; clarNode.Q.value=.9; clarNode.gain.value=0;
-  clarNode2=ACX.createBiquadFilter(); clarNode2.type='peaking'; clarNode2.frequency.value=5000; clarNode2.Q.value=1.4; clarNode2.gain.value=0;
-  compNode=ACX.createDynamicsCompressor(); applyBoostDSP(boostLv);
-  balanceNode=ACX.createStereoPanner(); balanceNode.pan.value=0;
-  immDryGain=ACX.createGain(); immWetGain=ACX.createGain();
-  immConv=ACX.createConvolver();
-  immLPF=ACX.createBiquadFilter(); immLPF.type='lowpass'; immLPF.frequency.value=120; immLPF.Q.value=.7;
-  immLFEGain=ACX.createGain(); immLFEGain.gain.value=.7;
-  buildImmPanners(); buildImmImpulse();
-  analyserNode=ACX.createAnalyser(); analyserNode.fftSize=2048;
-  masterGain=ACX.createGain(); masterGain.gain.value=.8;
-  rebuildPeqNodes(); rebuildStyleNodes();
+
+  // Noise reduction
+  nrNode=ACX.createBiquadFilter();nrNode.type='highpass';nrNode.frequency.value=20;nrNode.Q.value=.5;
+
+  // Tone
+  toneB=ACX.createBiquadFilter();toneB.type='lowshelf';toneB.frequency.value=200;toneB.gain.value=0;
+  toneM=ACX.createBiquadFilter();toneM.type='peaking';toneM.frequency.value=1000;toneM.Q.value=.8;toneM.gain.value=0;
+  toneT=ACX.createBiquadFilter();toneT.type='highshelf';toneT.frequency.value=5000;toneT.gain.value=0;
+
+  // ── Bass punch + rumble clarity nodes ──
+  // Punch: transient shaping via fast attack comp on mid-bass + harmonic exciter
+  bassTransientNode=ACX.createBiquadFilter(); // band-isolate 60–200Hz for punch
+  bassTransientNode.type='peaking';bassTransientNode.frequency.value=100;bassTransientNode.Q.value=1.2;bassTransientNode.gain.value=0;
+  bassHarmonicNode=ACX.createBiquadFilter();  // adds harmonic presence to punch
+  bassHarmonicNode.type='peaking';bassHarmonicNode.frequency.value=160;bassHarmonicNode.Q.value=2.0;bassHarmonicNode.gain.value=0;
+  // Rumble: sub-bass texture + harmonic overtones
+  bassRumbleLPF=ACX.createBiquadFilter();bassRumbleLPF.type='lowshelf';bassRumbleLPF.frequency.value=60;bassRumbleLPF.gain.value=0;
+  bassRumbleHarmNode=ACX.createBiquadFilter(); // 60Hz texture layer
+  bassRumbleHarmNode.type='peaking';bassRumbleHarmNode.frequency.value=55;bassRumbleHarmNode.Q.value=3.0;bassRumbleHarmNode.gain.value=0;
+  bassRumbleHarm2=ACX.createBiquadFilter();    // 90Hz micro-detail overtone
+  bassRumbleHarm2.type='peaking';bassRumbleHarm2.frequency.value=90;bassRumbleHarm2.Q.value=4.0;bassRumbleHarm2.gain.value=0;
+
+  // Vivid
+  brightNode=ACX.createBiquadFilter();brightNode.type='highshelf';brightNode.frequency.value=8000;brightNode.gain.value=0;
+  clarNode=ACX.createBiquadFilter();clarNode.type='peaking';clarNode.frequency.value=3000;clarNode.Q.value=.9;clarNode.gain.value=0;
+  clarNode2=ACX.createBiquadFilter();clarNode2.type='peaking';clarNode2.frequency.value=5000;clarNode2.Q.value=1.4;clarNode2.gain.value=0;
+
+  // Compressor + balance
+  compNode=ACX.createDynamicsCompressor();applyBoostDSP(boostLv);
+  balanceNode=ACX.createStereoPanner();balanceNode.pan.value=0;
+
+  // Soundstage nodes
+  buildSSNodes();
+
+  // Analyser + master
+  analyserNode=ACX.createAnalyser();analyserNode.fftSize=2048;
+  masterGain=ACX.createGain();masterGain.gain.value=.8;
+
+  rebuildPeqNodes();rebuildStyleNodes();
   connectGraph();
 }
 
-function az_el_xyz(az,el,d=1){
-  const a=az*Math.PI/180,e=el*Math.PI/180;
-  return{x:d*Math.cos(e)*Math.sin(a),y:d*Math.sin(e),z:-d*Math.cos(e)*Math.cos(a)};
+// ══════════════════════════════════════════════════════
+// SOUNDSTAGE — Psychoacoustic M/S widening
+// Built as: src → splitter → [mid path, side path] → merger → out
+// Mid/Side is derived from L+R and L-R then recombined
+// Haas delay on one channel adds perceived width
+// HF shelf boost on side adds air/space
+// Short reverb adds room size sensation
+// ══════════════════════════════════════════════════════
+function buildSSNodes(){
+  if(!ACX)return;
+  ssSplitter=ACX.createChannelSplitter(2);
+  ssMerger=ACX.createChannelMerger(2);
+  ssMidGain=ACX.createGain();ssMidGain.gain.value=1.0;
+  ssSideGain=ACX.createGain();ssSideGain.gain.value=1.0;
+  ssHaasDelay=ACX.createDelay(0.05);ssHaasDelay.delayTime.value=0;
+  ssHaasGain=ACX.createGain();ssHaasGain.gain.value=0;
+  ssHFWideNode=ACX.createBiquadFilter();ssHFWideNode.type='highshelf';ssHFWideNode.frequency.value=2500;ssHFWideNode.gain.value=0;
+  ssReverbConv=ACX.createConvolver();buildSSReverb(0.02,0.3);
+  ssReverbGain=ACX.createGain();ssReverbGain.gain.value=0;
 }
 
-function buildImmPanners(){
-  immPanners.forEach(p=>{try{p.disconnect();}catch(e){}});
-  immGains.forEach(g=>{try{g.disconnect();}catch(e){}});
-  immPanners=[];immGains=[];
-  const r=immP.radius/100,hf=immP.height/100,rot=(immP.rot||0)*Math.PI/180;
-  CH_ALL.forEach(ch=>{
-    const p=ACX.createPanner();
-    p.panningModel='HRTF';p.distanceModel='inverse';p.rolloffFactor=1;
-    p.coneInnerAngle=360;p.coneOuterAngle=360;p.coneOuterGain=0;
-    const isLFE=(ch===CH_LFE);
-    const isTop=CH_TOP.includes(ch);
-    const dist=isLFE?0.4:isTop?r*1.1:r;
-    const el=isTop?ch.el*hf+hf*10:ch.el;
-    const az=ch.az+rot*180/Math.PI;
-    const{x,y,z}=az_el_xyz(az,el,dist*1.5+0.1);
-    p.positionX.value=x;p.positionY.value=y;p.positionZ.value=z;
-    const g=ACX.createGain();
-    const angN=Math.abs(ch.az)/180,df=immP.diff/100;
-    g.gain.value=isLFE?ch.g*(immP.lfe/100)*1.05:isTop?ch.g*(0.4+df*0.6)*hf:ch.g*(1+angN*df*0.4);
-    immPanners.push(p);immGains.push(g);
-  });
-}
-
-function buildImmImpulse(){
-  if(!ACX||!immConv)return;
-  const len=Math.floor(SR*Math.max(0.05,immP.dur));
+function buildSSReverb(preDelay,decaySec){
+  if(!ACX||!ssReverbConv)return;
+  const len=Math.floor(SR*Math.max(0.05,decaySec));
   const buf=ACX.createBuffer(2,len,SR);
-  const pre=Math.floor(SR*0.002);
-  for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<pre;i++)d[i]=0;for(let i=pre;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-(i-pre)/(len-pre),immP.decay);}
-  immConv.buffer=buf;
+  const pre=Math.floor(SR*preDelay);
+  for(let c=0;c<2;c++){
+    const d=buf.getChannelData(c);
+    for(let i=0;i<pre;i++)d[i]=0;
+    for(let i=pre;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-(i-pre)/(len-pre),4.0);
+  }
+  ssReverbConv.buffer=buf;
+}
+
+function applySSParam(){
+  if(!ACX||!ssMidGain)return;
+  const t=ACX.currentTime,s=ssSpace/100;
+  // Mid reduces slightly, side increases — widening
+  ssMidGain.gain.setTargetAtTime(Math.max(0.5,1-s*0.35),t,.02);
+  ssSideGain.gain.setTargetAtTime(1+s*2.8,t,.02);
+  // Haas: 0–22ms delay ramps with space
+  ssHaasDelay.delayTime.setTargetAtTime(s*0.022,t,.02);
+  ssHaasGain.gain.setTargetAtTime(s*0.18,t,.02);
+  // HF shelf boost on side for air
+  ssHFWideNode.gain.setTargetAtTime(s*5,t,.02);
+  // Reverb wet mix ramps in gently
+  ssReverbGain.gain.setTargetAtTime(s*0.15,t,.02);
+  // Rebuild reverb size based on space
+  buildSSReverb(0.001+s*0.01, 0.05+s*0.45);
+}
+
+// ══════════════════════════════════════════════════════
+// BASS PUNCH + RUMBLE — applied via toneB chain
+// bassLevel: -20 to +20 from the tone bass slider
+// ══════════════════════════════════════════════════════
+function applyBassEnhancement(bassLevel){
+  if(!ACX||!bassTransientNode)return;
+  const t=ACX.currentTime;
+  const b=bassLevel/20; // normalize -1 to +1
+  const pos=Math.max(0,b);  // 0 to 1 for positive boost
+  const neg=Math.max(0,-b); // 0 to 1 for negative (cut)
+
+  // PUNCH: transient shaping — boost 100Hz attack band, add 160Hz harmonic
+  // Scales with bass boost, emphasizes attack transients
+  bassTransientNode.gain.setTargetAtTime(pos*4.5,t,.02);
+  bassHarmonicNode.gain.setTargetAtTime(pos*3.0,t,.02);
+
+  // RUMBLE CLARITY: sub-bass texture
+  // Low shelf adds weight, peaking nodes add textured grain to rumble
+  bassRumbleLPF.gain.setTargetAtTime(pos*3.5,t,.02);
+  // Micro-detail: 55Hz and 90Hz narrow peaks add harmonic texture to rumble
+  // This makes deep bass feel "grainy" and physical rather than a flat wall
+  bassRumbleHarmNode.gain.setTargetAtTime(pos*2.5,t,.02);
+  bassRumbleHarm2.gain.setTargetAtTime(pos*1.8,t,.02);
+
+  // On cut, reduce sub mud
+  if(neg>0){
+    bassRumbleLPF.gain.setTargetAtTime(-neg*2,t,.02);
+    bassRumbleHarmNode.gain.setTargetAtTime(0,t,.02);
+    bassRumbleHarm2.gain.setTargetAtTime(0,t,.02);
+    bassTransientNode.gain.setTargetAtTime(0,t,.02);
+    bassHarmonicNode.gain.setTargetAtTime(0,t,.02);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// CONNECT GRAPH
+// ══════════════════════════════════════════════════════
+function connectGraph(){
+  if(!ACX||!srcNode)return;
+  if(!masterOn){bypassAllDSP();return;}
+
+  const allNodes=[srcNode,nrNode,...styleNodes,toneB,toneM,toneT,
+    bassTransientNode,bassHarmonicNode,bassRumbleLPF,bassRumbleHarmNode,bassRumbleHarm2,
+    brightNode,clarNode,clarNode2,...peqNodes,compNode,balanceNode,
+    ssMidGain,ssSideGain,ssHaasDelay,ssHaasGain,ssHFWideNode,
+    ssReverbConv,ssReverbGain,ssMerger,ssSplitter,analyserNode,masterGain];
+  allNodes.forEach(n=>{if(n)try{n.disconnect();}catch(e){}});
+
+  let n=srcNode;
+  const pipe=(...nodes)=>{nodes.forEach(nx=>{n.connect(nx);n=nx;});};
+
+  pipe(nrNode);
+  styleNodes.forEach(f=>{n.connect(f);n=f;});
+  // Tone chain: bass → bass enhancement chain → mids → treble
+  pipe(toneB);
+  // Bass enhancement runs in series after toneB
+  pipe(bassRumbleLPF,bassRumbleHarmNode,bassRumbleHarm2,bassTransientNode,bassHarmonicNode);
+  pipe(toneM,toneT,brightNode,clarNode,clarNode2);
+  peqNodes.forEach(f=>{n.connect(f);n=f;});
+  pipe(compNode,balanceNode);
+
+  if(ssOn&&ssSpace>0){
+    // Psychoacoustic soundstage: split into M/S, process, recombine
+    // dry path
+    const dryG=ACX.createGain();dryG.gain.value=Math.max(0.05,1-ssSpace/100*0.5);
+    n.connect(dryG);dryG.connect(analyserNode);
+
+    // M/S processing path
+    n.connect(ssSplitter);
+    // Mid = L+R average
+    ssSplitter.connect(ssMidGain,0);
+    ssSplitter.connect(ssMidGain,1);
+    // Side = L-R (approximated via gain inversion on one channel)
+    ssSplitter.connect(ssSideGain,0);
+    const sideInvGain=ACX.createGain();sideInvGain.gain.value=-1;
+    ssSplitter.connect(sideInvGain,1);
+    sideInvGain.connect(ssSideGain);
+
+    // HF widening on side channel
+    ssSideGain.connect(ssHFWideNode);
+
+    // Recombine to stereo merger
+    ssMidGain.connect(ssMerger,0,0);
+    ssMidGain.connect(ssMerger,0,1);
+    ssHFWideNode.connect(ssMerger,0,0);
+    const sideInv2=ACX.createGain();sideInv2.gain.value=-1;
+    ssHFWideNode.connect(sideInv2);
+    sideInv2.connect(ssMerger,0,1);
+
+    // Haas delay on right channel for extra width
+    n.connect(ssHaasDelay);ssHaasDelay.connect(ssHaasGain);ssHaasGain.connect(analyserNode);
+
+    ssMerger.connect(analyserNode);
+
+    // Short reverb for room air
+    n.connect(ssReverbConv);ssReverbConv.connect(ssReverbGain);ssReverbGain.connect(analyserNode);
+  } else {
+    n.connect(analyserNode);
+  }
+
+  analyserNode.connect(masterGain);
+  masterGain.connect(ACX.destination);
 }
 
 function rebuildStyleNodes(){
@@ -791,155 +888,43 @@ function rebuildPeqNodes(){
 }
 
 // ══════════════════════════════════════════════════════
-// CONNECT GRAPH
-// ══════════════════════════════════════════════════════
-function connectGraph(){
-  if(!ACX||!srcNode)return;
-  if(!masterOn){bypassAllDSP();return;}
-  [srcNode,nrNode,...styleNodes,toneB,toneM,toneT,brightNode,clarNode,clarNode2,
-   ...peqNodes,compNode,balanceNode,
-   immDryGain,immWetGain,immConv,immLPF,immLFEGain,
-   ...immPanners,...immGains,analyserNode,masterGain
-  ].forEach(n=>{if(n)try{n.disconnect();}catch(e){}});
-  let n=srcNode;
-  const pipe=(...nodes)=>{nodes.forEach(nx=>{n.connect(nx);n=nx;});};
-  pipe(nrNode);
-  styleNodes.forEach(f=>{n.connect(f);n=f;});
-  pipe(toneB,toneM,toneT,brightNode,clarNode,clarNode2);
-  peqNodes.forEach(f=>{n.connect(f);n=f;});
-  pipe(compNode,balanceNode);
-  if(immOn){
-    const wr=immP.wet/100;
-    immDryGain.gain.value=Math.max(0.05,1-wr*0.6);
-    immWetGain.gain.value=wr*0.45;
-    n.connect(immDryGain);immDryGain.connect(analyserNode);
-    n.connect(immConv);immConv.connect(immWetGain);immWetGain.connect(analyserNode);
-    CH_BED.forEach((ch,i)=>{n.connect(immGains[i]);immGains[i].connect(immPanners[i]);immPanners[i].connect(analyserNode);});
-    CH_TOP.forEach((ch,i)=>{const gi=i+CH_BED.length;n.connect(immGains[gi]);immGains[gi].connect(immPanners[gi]);immPanners[gi].connect(analyserNode);});
-    const lfeIdx=CH_ALL.length-1;
-    n.connect(immLPF);immLPF.connect(immLFEGain);
-    immLFEGain.gain.value=CH_LFE.g*(immP.lfe/100);
-    immLFEGain.connect(immPanners[lfeIdx]);immPanners[lfeIdx].connect(analyserNode);
-  } else {
-    n.connect(analyserNode);
-  }
-  analyserNode.connect(masterGain);
-  masterGain.connect(ACX.destination);
-}
-
-// ══════════════════════════════════════════════════════
-// IMMERSION CONTROLS
+// SOUNDSTAGE CONTROLS
 // ══════════════════════════════════════════════════════
 function onImmToggle(cb){
-  immOn=cb.checked;
+  ssOn=cb.checked;
   const lbl=document.getElementById('immLbl');
-  lbl.textContent=immOn?'Active':'Off';
-  lbl.style.color=immOn?'var(--imm)':'var(--sub)';
-  document.getElementById('immCard').classList.toggle('active',immOn);
-  document.getElementById('badge-imm').style.display=immOn?'inline':'none';
-  document.getElementById('immBadgeNP').style.display=immOn?'inline':'none';
-  if(inited&&masterOn){buildImmPanners();buildImmImpulse();connectGraph();}
-  immOn?startStageAnim():stopStageAnim();
-  drawStageViz();
+  lbl.textContent=ssOn?'Active':'Off';
+  lbl.style.color=ssOn?'var(--imm)':'var(--sub)';
+  document.getElementById('immCard').classList.toggle('active',ssOn);
+  document.getElementById('badge-ss').style.display=ssOn?'inline':'none';
+  if(inited&&masterOn)connectGraph();
+  updateSSMeter();
 }
 
-function setImmPreset(key,btn){
-  document.querySelectorAll('.imm-preset').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');immPreset=key;immP={...IMM_PRESETS[key]};
-  syncImmSliders();
-  if(inited&&masterOn){buildImmPanners();buildImmImpulse();connectGraph();}
-  drawStageViz();
-}
-
-function syncImmSliders(){
-  const s=(id,v,u='')=>{const el=document.getElementById(id);if(!el)return;el.value=v;document.getElementById(id+'V').textContent=v+u;setSPI(el,v/+el.max);};
-  s('immRadius',immP.radius);s('immRot',immP.rot,'°');s('immHeight',immP.height);
-  s('immDiff',immP.diff);s('immLFE',immP.lfe);s('immWet',immP.wet);
-}
-
-function onImmParam(){
-  immP.radius=+document.getElementById('immRadius').value;
-  immP.rot   =+document.getElementById('immRot').value;
-  immP.height=+document.getElementById('immHeight').value;
-  immP.diff  =+document.getElementById('immDiff').value;
-  immP.lfe   =+document.getElementById('immLFE').value;
-  immP.wet   =+document.getElementById('immWet').value;
-  document.getElementById('immRadiusV').textContent=immP.radius;
-  document.getElementById('immRotV').textContent=immP.rot+'°';
-  document.getElementById('immHeightV').textContent=immP.height;
-  document.getElementById('immDiffV').textContent=immP.diff;
-  document.getElementById('immLFEV').textContent=immP.lfe;
-  document.getElementById('immWetV').textContent=immP.wet;
-  ['immRadius','immRot','immHeight','immDiff','immLFE','immWet'].forEach(id=>{const el=document.getElementById(id);setSPI(el,+el.value/+el.max);});
-  if(inited&&masterOn){buildImmPanners();buildImmImpulse();connectGraph();}
-  drawStageViz();
-}
-
-// ── Circular soundstage canvas ──
-function drawStageViz(){
-  const cv=document.getElementById('stageViz');if(!cv)return;
-  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,R=W/2-4;
-  const ctx=cv.getContext('2d');ctx.clearRect(0,0,W,H);
-  const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,R);
-  bg.addColorStop(0,'rgba(30,10,50,.95)');bg.addColorStop(1,'rgba(10,5,20,.98)');
-  ctx.fillStyle=bg;ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fill();
-  if(!immOn||!masterOn){
-    ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,.18)';ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(masterOn?'IMMERSION OFF':'DSP OFF',cx,cy);return;
+function onSSParam(){
+  ssSpace=+document.getElementById('ssSpace').value;
+  document.getElementById('ssSpaceV').textContent=ssSpace+'%';
+  setSPI(document.getElementById('ssSpace'),ssSpace/100);
+  updateSSMeter();
+  if(inited&&masterOn){
+    applySSParam();
+    connectGraph();
   }
-  const rO=R-8,rI=R*0.52;
-  [rO,rI,R*0.28].forEach((r,i)=>{ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle=`rgba(224,64,251,${0.12-i*0.03})`;ctx.lineWidth=1;ctx.stroke();});
-  const rotR=stageAngle+(immP.rot||0)*Math.PI/180;
-  // Connection lines
-  ctx.globalAlpha=0.06;
-  CH_BED.forEach(ch=>{const az=ch.az*Math.PI/180+rotR,r=rO*(immP.radius/100);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.sin(az),cy-r*Math.cos(az));ctx.strokeStyle='rgba(167,139,250,1)';ctx.lineWidth=1;ctx.stroke();});
-  ctx.globalAlpha=1;
-  // Bed channels
-  CH_BED.forEach(ch=>{
-    const az=ch.az*Math.PI/180+rotR,r=rO*(immP.radius/100);
-    const px=cx+r*Math.sin(az),py=cy-r*Math.cos(az);
-    const ang=Math.abs(ch.az)/180,alpha=0.5+(immP.diff/100)*0.35+ang*0.15;
-    const grd=ctx.createRadialGradient(px,py,0,px,py,10);
-    grd.addColorStop(0,`rgba(124,92,252,${alpha})`);grd.addColorStop(1,'rgba(124,92,252,0)');
-    ctx.beginPath();ctx.arc(px,py,10,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
-    ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);ctx.fillStyle=`rgba(167,139,250,${alpha+0.3})`;ctx.fill();
-    ctx.font='7px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillStyle='rgba(200,180,255,.7)';ctx.fillText(ch.n,px,py-9);
-  });
-  // Top channels
-  CH_TOP.forEach(ch=>{
-    const az=ch.az*Math.PI/180+rotR,hf=immP.height/100;
-    const r=rI*0.72*(immP.radius/100)+rI*0.18;
-    const px=cx+r*Math.sin(az),py=cy-r*Math.cos(az);
-    const alpha=0.4+hf*0.55;
-    const grd=ctx.createRadialGradient(px,py,0,px,py,9);
-    grd.addColorStop(0,`rgba(224,64,251,${alpha})`);grd.addColorStop(1,'rgba(224,64,251,0)');
-    ctx.beginPath();ctx.arc(px,py,9,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
-    ctx.beginPath();ctx.arc(px,py,3.5,0,Math.PI*2);ctx.fillStyle=`rgba(240,100,255,${alpha+0.3})`;ctx.fill();
-    ctx.font='7px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillStyle='rgba(240,180,255,.7)';ctx.fillText(ch.n,px,py-8);
-  });
-  // LFE
-  const lfR=9*(immP.lfe/100)+3;
-  const gLFE=ctx.createRadialGradient(cx,cy,0,cx,cy,lfR+4);
-  gLFE.addColorStop(0,`rgba(249,115,22,${0.5+immP.lfe/200})`);gLFE.addColorStop(1,'rgba(249,115,22,0)');
-  ctx.beginPath();ctx.arc(cx,cy,lfR+4,0,Math.PI*2);ctx.fillStyle=gLFE;ctx.fill();
-  ctx.beginPath();ctx.arc(cx,cy,lfR,0,Math.PI*2);ctx.fillStyle='rgba(249,115,22,.9)';ctx.fill();
-  ctx.font='7px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillStyle='rgba(255,200,120,.9)';ctx.fillText('LFE',cx,cy);
-  // Listener
-  ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.12)';ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=1.5;ctx.stroke();
 }
 
-function startStageAnim(){
-  if(stageRAF)return;
-  let last=performance.now();
-  function tick(now){stageRAF=requestAnimationFrame(tick);const dt=now-last;last=now;stageAngle+=0.0008*dt;if(stageAngle>Math.PI*2)stageAngle-=Math.PI*2;drawStageViz();}
-  stageRAF=requestAnimationFrame(tick);
+function updateSSMeter(){
+  const fill=document.getElementById('ssMeterFill');
+  const hint=document.getElementById('ssHint');
+  const s=ssOn?ssSpace:0;
+  fill.style.width=s+'%';
+  const labels=['Move the slider to open up the soundstage.',
+    'Slight widening — subtle stereo expansion.',
+    'Moderate space — noticeably wider stereo image.',
+    'Wide stage — broad, enveloping soundstage.',
+    'Expansive — perceived surround-like immersion.'];
+  const idx=Math.floor(s/25);
+  hint.textContent=ssOn?labels[Math.min(idx,4)]:labels[0];
 }
-function stopStageAnim(){if(stageRAF){cancelAnimationFrame(stageRAF);stageRAF=null;}}
 
 // ══════════════════════════════════════════════════════
 // DSP CONTROLS
@@ -949,7 +934,18 @@ function onStyleInt(el){styleInt_=+el.value;document.getElementById('styleIntV')
 function onNR(cb){nrOn=cb.checked;const l=document.getElementById('nrLbl');l.textContent=nrOn?'Active':'Off';l.style.color=nrOn?'var(--acG)':'var(--sub)';document.getElementById('nrAmtSl').disabled=!nrOn;document.getElementById('badge-nr').style.display=nrOn?'inline':'none';if(inited&&masterOn)applyNR();}
 function onNRamt(el){nrAmt_=+el.value;document.getElementById('nrAmtV').textContent=nrAmt_;setSP(el,nrAmt_/20);if(inited&&masterOn)applyNR();}
 function applyNR(){if(!nrNode)return;nrNode.frequency.value=nrOn?20+(nrAmt_/20)*220:20;nrNode.Q.value=nrOn?.6+(nrAmt_/20)*2:.1;}
-function onTone(band,el){const v=+el.value;toneV[band]=v;document.getElementById('v'+band.charAt(0).toUpperCase()+band.slice(1)).textContent=(v>0?'+':'')+v;const node={treble:toneT,mids:toneM,bass:toneB}[band];if(node&&masterOn)node.gain.setTargetAtTime(v*.75,ACX?.currentTime||0,.02);}
+
+function onTone(band,el){
+  const v=+el.value;
+  toneV[band]=v;
+  document.getElementById('v'+band.charAt(0).toUpperCase()+band.slice(1)).textContent=(v>0?'+':'')+v;
+  setSP(el,(v+20)/40);
+  const node={treble:toneT,mids:toneM,bass:toneB}[band];
+  if(node&&masterOn&&ACX)node.gain.setTargetAtTime(v*.75,ACX.currentTime,.02);
+  // Bass slider also drives punch + rumble clarity
+  if(band==='bass'&&masterOn)applyBassEnhancement(v);
+}
+
 function onBoost(el){boostLv=+el.value;document.getElementById('boostV').textContent=boostLv;document.getElementById('boostBar').style.width=(boostLv/20*100)+'%';setSP(el,boostLv/20);if(masterOn)applyBoostDSP(boostLv);}
 function applyBoostDSP(lv){if(!compNode)return;const t=lv/20;compNode.threshold.value=-44+t*24;compNode.ratio.value=3+t*17;compNode.knee.value=30-t*22;compNode.attack.value=.003;compNode.release.value=.3-t*.18;if(masterGain)masterGain.gain.value=.55+t*.85;}
 function onVivid(){vividBright=+document.getElementById('brightSl').value;vividClarity=+document.getElementById('claritySl').value;document.getElementById('brightV').textContent=vividBright;document.getElementById('clarityV').textContent=vividClarity;setSP(document.getElementById('brightSl'),vividBright/20);setSP(document.getElementById('claritySl'),vividClarity/20);const active=vividBright!==10||vividClarity!==10;document.getElementById('badge-vivid').style.display=active&&masterOn?'inline':'none';document.getElementById('vividBar').style.opacity=active?.9:.4;if(!ACX||!masterOn)return;brightNode.gain.setTargetAtTime((vividBright-10)*.75,ACX.currentTime,.02);clarNode.gain.setTargetAtTime((vividClarity-10)*.65,ACX.currentTime,.02);clarNode2.gain.setTargetAtTime((vividClarity-10)*.3,ACX.currentTime,.02);}
@@ -979,7 +975,7 @@ function bqMag(band,freqs,SR){const out=new Float32Array(freqs.length);const f0=
 // ══════════════════════════════════════════════════════
 // EXPORT
 // ══════════════════════════════════════════════════════
-function exportInfo(){alert('WAV Export:\n• 24-bit integer PCM\n• 384,000 Hz sample rate\n• Stereo (9.1.4 HRTF binaural mixdown)\n• 18,432 kbps\n• Full DSP + Immersion chain applied offline\n• Local files only');}
+function exportInfo(){alert('WAV Export:\n• 24-bit integer PCM\n• 384,000 Hz sample rate\n• Stereo\n• 18,432 kbps\n• Full DSP chain applied offline\n• Local files only');}
 async function exportWAV(){
   if(!tracks.length||curIdx<0){alert('Load a local file first.');return;}
   const btn=document.querySelector('.ex-btn.primary');btn.textContent='⏳ Rendering…';btn.disabled=true;
@@ -1002,9 +998,16 @@ async function exportWAV(){
       const oNR=OAC.createBiquadFilter();oNR.type='highpass';oNR.frequency.value=nrOn?20+(nrAmt_/20)*220:20;oNR.Q.value=nrOn?.6+(nrAmt_/20)*2:.1;pipe(oNR);
       (STYLE_EQ[styleKey]||[]).forEach(b=>{const f=OAC.createBiquadFilter();f.type=b.t;f.frequency.value=b.f;f.Q.value=b.q||1.4;f.gain.value=b.g*(styleInt_/10);n.connect(f);n=f;});
       const oB=OAC.createBiquadFilter();oB.type='lowshelf';oB.frequency.value=200;oB.gain.value=toneV.bass*.75;
+      // Bass enhancement offline
+      const bv=toneV.bass/20,bpos=Math.max(0,bv);
+      const oBT=OAC.createBiquadFilter();oBT.type='peaking';oBT.frequency.value=100;oBT.Q.value=1.2;oBT.gain.value=bpos*4.5;
+      const oBH=OAC.createBiquadFilter();oBH.type='peaking';oBH.frequency.value=160;oBH.Q.value=2.0;oBH.gain.value=bpos*3.0;
+      const oBRL=OAC.createBiquadFilter();oBRL.type='lowshelf';oBRL.frequency.value=60;oBRL.gain.value=bpos*3.5;
+      const oBRH=OAC.createBiquadFilter();oBRH.type='peaking';oBRH.frequency.value=55;oBRH.Q.value=3.0;oBRH.gain.value=bpos*2.5;
+      const oBRH2=OAC.createBiquadFilter();oBRH2.type='peaking';oBRH2.frequency.value=90;oBRH2.Q.value=4.0;oBRH2.gain.value=bpos*1.8;
       const oM=OAC.createBiquadFilter();oM.type='peaking';oM.frequency.value=1000;oM.Q.value=.8;oM.gain.value=toneV.mids*.75;
       const oT=OAC.createBiquadFilter();oT.type='highshelf';oT.frequency.value=5000;oT.gain.value=toneV.treble*.75;
-      pipe(oB,oM,oT);
+      pipe(oB,oBRL,oBRH,oBRH2,oBT,oBH,oM,oT);
       const oBr=OAC.createBiquadFilter();oBr.type='highshelf';oBr.frequency.value=8000;oBr.gain.value=(vividBright-10)*.75;
       const oCl=OAC.createBiquadFilter();oCl.type='peaking';oCl.frequency.value=3000;oCl.Q.value=.9;oCl.gain.value=(vividClarity-10)*.65;
       const oCl2=OAC.createBiquadFilter();oCl2.type='peaking';oCl2.frequency.value=5000;oCl2.Q.value=1.4;oCl2.gain.value=(vividClarity-10)*.3;
@@ -1014,37 +1017,12 @@ async function exportWAV(){
       oC.threshold.value=-44+t_*24;oC.ratio.value=3+t_*17;oC.knee.value=30-t_*22;oC.attack.value=.003;oC.release.value=.3-t_*.18;pipe(oC);
     }
     const oG=OAC.createGain();oG.gain.value=masterOn?.55+(boostLv/20)*.85:.8;
-    if(masterOn&&immOn){
-      setP(55,'Building 9.1.4 Immersion offline…');
-      const p=immP,wr=p.wet/100;
-      const oDry=OAC.createGain();oDry.gain.value=Math.max(0.05,1-wr*0.6);
-      const oWet=OAC.createGain();oWet.gain.value=wr*0.45;
-      const oCV=OAC.createConvolver();
-      const il=Math.floor(SR*p.dur),ibuf=OAC.createBuffer(2,il,SR);
-      for(let c=0;c<2;c++){const dd=ibuf.getChannelData(c);for(let i=0;i<il;i++)dd[i]=(Math.random()*2-1)*Math.pow(1-i/il,p.decay);}
-      oCV.buffer=ibuf;
-      n.connect(oDry);oDry.connect(oG);n.connect(oCV);oCV.connect(oWet);oWet.connect(oG);
-      const rot=(p.rot||0)*Math.PI/180,hf=p.height/100;
-      CH_ALL.forEach((ch,i)=>{
-        const isLFE=(ch===CH_LFE),isTop=CH_TOP.includes(ch);
-        const op=OAC.createPanner();op.panningModel='HRTF';
-        const dist=isLFE?0.4:isTop?p.radius/100*1.1:p.radius/100;
-        const el=isTop?ch.el*hf+hf*10:ch.el,az=ch.az+rot*180/Math.PI;
-        const{x,y,z}=az_el_xyz(az,el,dist*1.5+0.1);
-        op.positionX.value=x;op.positionY.value=y;op.positionZ.value=z;
-        const og=OAC.createGain();
-        const angN=Math.abs(ch.az)/180,df=p.diff/100;
-        og.gain.value=isLFE?ch.g*(p.lfe/100)*1.05:isTop?ch.g*(0.4+df*0.6)*hf:ch.g*(1+angN*df*0.4);
-        if(isLFE){const oLPF=OAC.createBiquadFilter();oLPF.type='lowpass';oLPF.frequency.value=120;n.connect(oLPF);oLPF.connect(og);}else n.connect(og);
-        og.connect(op);op.connect(oG);
-      });
-    } else {n.connect(oG);}
-    oG.connect(OAC.destination);src.start(0);
+    n.connect(oG);oG.connect(OAC.destination);src.start(0);
     setP(65,'Rendering DSP at 384kHz…');
     const rendered=await OAC.startRendering();
     setP(88,'Encoding 24-bit WAV…');
     const blob=encodeWAV24(rendered);
-    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(tracks[curIdx].name||'export').replace(/[^a-z0-9]/gi,'_')+'_24bit_384kHz_914.wav';a.click();
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(tracks[curIdx].name||'export').replace(/[^a-z0-9]/gi,'_')+'_24bit_384kHz.wav';a.click();
     setP(100,'Done ✓');
   }catch(e){txt.textContent='Error: '+e.message;txt.style.color='var(--red)';console.error(e);}
   btn.textContent='⬇ Export WAV (24-bit / 384kHz)';btn.disabled=false;
@@ -1087,7 +1065,7 @@ AUD.addEventListener('ended',()=>{if(!doRepeat){if(crossfadeTime>0&&tracks.lengt
 const vizC=document.getElementById('viz');
 function resizeViz(){vizC.width=vizC.offsetWidth*devicePixelRatio;vizC.height=vizC.offsetHeight*devicePixelRatio;}
 resizeViz();window.addEventListener('resize',()=>{resizeViz();resizePeq();});
-function drawViz(){requestAnimationFrame(drawViz);const ct=vizC.getContext('2d'),W=vizC.width,H=vizC.height;ct.clearRect(0,0,W,H);if(!analyserNode)return;const d=new Uint8Array(analyserNode.frequencyBinCount);analyserNode.getByteFrequencyData(d);const bw=W/d.length*2.5;for(let i=0;i<d.length;i++){const p=i/d.length,h=(d[i]/255)*H;ct.fillStyle=immOn&&masterOn?`rgb(${Math.round(224-p*100)},${Math.round(64+p*36)},${Math.round(251-p*100)})`:`rgb(${Math.round(124+p*131)},${Math.round(92+p*23)},${Math.round(252+p*(22-252))})`;ct.fillRect(i*bw*1.1,H-h,bw*.9,h);}}
+function drawViz(){requestAnimationFrame(drawViz);const ct=vizC.getContext('2d'),W=vizC.width,H=vizC.height;ct.clearRect(0,0,W,H);if(!analyserNode)return;const d=new Uint8Array(analyserNode.frequencyBinCount);analyserNode.getByteFrequencyData(d);const bw=W/d.length*2.5;for(let i=0;i<d.length;i++){const p=i/d.length,h=(d[i]/255)*H;ct.fillStyle=ssOn&&masterOn?`rgb(${Math.round(224-p*100)},${Math.round(64+p*36)},${Math.round(251-p*100)})`:`rgb(${Math.round(124+p*131)},${Math.round(92+p*23)},${Math.round(252+p*(22-252))})`;ct.fillRect(i*bw*1.1,H-h,bw*.9,h);}}
 drawViz();
 const peqCv=document.getElementById('peq');
 function resizePeq(){peqCv.width=peqCv.offsetWidth;peqCv.height=110;drawPeq();}
@@ -1141,18 +1119,17 @@ function secT(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('Failed: '+src));document.head.appendChild(s);});}
 function updateSrcBadge(txt){const b=document.getElementById('srcBadge');const colors={SPOTIFY:'#1db954',DEEZER:'#ef5466',TIDAL:'#00e8ff','APPLE MUSIC':'#fc3c44','YOUTUBE':'#ff0000',LOCAL:'var(--border)'};const c=colors[txt]||'var(--border)';b.textContent=txt;b.style.borderColor=c;b.style.color=txt==='LOCAL'?'var(--sub)':c;b.style.background=txt==='LOCAL'?'rgba(255,255,255,.04)':`color-mix(in srgb,${c} 10%,transparent)`;}
-function setSP(el,ratio){el.style.setProperty('--p',(ratio*100).toFixed(1)+'%');}
+function setSP(el,ratio){el.style.setProperty('--p',(Math.max(0,Math.min(1,ratio))*100).toFixed(1)+'%');}
 function setSPI(el,ratio){if(el)el.style.setProperty('--p',Math.max(0,Math.min(100,ratio*100)).toFixed(1)+'%');}
 
 // ── OAuth callbacks ──
 (async()=>{try{const s=new URLSearchParams(location.search).get('state');if(s==='sp_auth')await spCallback();else if(s==='td_auth')await tdCallback();else if(s==='yt_auth')await ytCallback();}catch(e){console.error('OAuth:',e);}})();
 
-// ── Init sliders ──
+// ── Init ──
 ['styleIntSl','nrAmtSl','boostSl','brightSl','claritySl'].forEach(id=>{const el=document.getElementById(id);if(el)setSP(el,+el.value/(+el.max||20));});
-['immRadius','immRot','immHeight','immDiff','immLFE','immWet'].forEach(id=>{const el=document.getElementById(id);if(el)setSPI(el,+el.value/+el.max);});
+setSPI(document.getElementById('ssSpace'),0);
 renderPeqUI();
-drawStageViz();
-// Initialise settings cards as disabled until master is turned on
+updateSSMeter();
 ['sc-style','sc-nr','sc-tone','sc-boost','sc-vivid','sc-rg','sc-peq-section'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('disabled');});
 document.getElementById('immCard').style.opacity='0.5';
 document.getElementById('immCard').style.pointerEvents='none';
