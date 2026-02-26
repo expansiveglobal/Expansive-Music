@@ -32,6 +32,12 @@ jobs:
           mkdir -p android/app/src/main/assets/public
           cp www/index.html android/app/src/main/assets/public/index.html
 
+      - name: Download Gradle wrapper jar
+        run: |
+          mkdir -p android/gradle/wrapper
+          curl -o android/gradle/wrapper/gradle-wrapper.jar \
+            https://raw.githubusercontent.com/gradle/gradle/v8.2.1/gradle/wrapper/gradle-wrapper.jar
+
       - name: Generate keystore
         run: |
           keytool -genkeypair \
