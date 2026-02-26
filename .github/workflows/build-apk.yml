@@ -51,6 +51,29 @@ jobs:
             -keypass "${{ secrets.KEY_PASSWORD }}" \
             -dname "CN=Dolby Player, OU=App, O=DolbyPlayer, L=Unknown, S=Unknown, C=US"
 
+      - name: Generate app icons from source
+        run: |
+          mkdir -p android/app/src/main/res/drawable
+          curl -L "https://drive.google.com/uc?export=download&id=1JftyBNBUgVQ3n-QOq7lz7GqllsB4iB8A" \
+            -o android/app/src/main/res/drawable/ic_launcher_source.png
+          SRC="android/app/src/main/res/drawable/ic_launcher_source.png"
+          declare -A sizes=(
+            [mipmap-mdpi]=48
+            [mipmap-hdpi]=72
+            [mipmap-xhdpi]=96
+            [mipmap-xxhdpi]=144
+            [mipmap-xxxhdpi]=192
+          )
+          for dpi in "${!sizes[@]}"; do
+            size="${sizes[$dpi]}"
+            mkdir -p "android/app/src/main/res/$dpi"
+            convert "$SRC" -resize "${size}x${size}" "android/app/src/main/res/$dpi/ic_launcher.png"
+            convert "$SRC" -resize "${size}x${size}" -alpha set \
+              \( +clone -threshold 50% -negate -morphology Erode Disk:$((size/2)) \) \
+              -compose DstIn -composite \
+              "android/app/src/main/res/$dpi/ic_launcher_round.png"
+          done
+
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
