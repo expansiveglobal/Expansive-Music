@@ -1,0 +1,16 @@
+{
+  "appId": "com.dolbyplayer.app",
+  "appName": "Dolby Player",
+  "webDir": "www",
+  "android": {
+    "buildOptions": {
+      "keystorePath": "release.keystore",
+      "keystorePassword": "dolbyplayer",
+      "keystoreAlias": "dolbyplayer",
+      "keystoreAliasPassword": "dolbyplayer"
+    }
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}
