@@ -584,13 +584,23 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(
 // ══════════════════════════════════════════════════════
 function toggleMaster(){
   const wasPlaying=!AUD.paused;
-  masterOn=!masterOn;syncUIFromState();
-  if(inited){
-    if(!masterOn)bypassAllDSP();
-    else{applyAllDSP();connectGraph();}
-    if(ACX.state==='suspended')ACX.resume();
-    if(wasPlaying)AUD.play().catch(()=>{});
+  masterOn=!masterOn;
+  syncUIFromState();
+  if(!masterOn){
+    if(inited)bypassAllDSP();
+    return;
   }
+  // DSP switched ON
+  if(!inited){
+    // First time — init the whole audio graph
+    initAudio();
+  } else {
+    applyAllDSP();
+    connectGraph();
+  }
+  // Always resume context then restore playback
+  const resume=ACX?ACX.resume():Promise.resolve();
+  resume.then(()=>{if(wasPlaying)AUD.play().catch(()=>{});});
   debounceSave();
 }
 function bypassAllDSP(){
