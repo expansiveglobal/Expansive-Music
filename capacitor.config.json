@@ -2,6 +2,11 @@
   "appId": "com.dolbyplayer.app",
   "appName": "Dolby Player",
   "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#0a0a12",
+    "webContentsDebuggingEnabled": false
+  },
   "server": {
     "androidScheme": "https"
   }
