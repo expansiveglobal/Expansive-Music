@@ -39,17 +39,19 @@ jobs:
       - name: Prepare www folder
         run: |
           mkdir -p www
-          # Find the main HTML file wherever it is in the repo
-          HTML=$(find . -maxdepth 3 -name "*.html" ! -path "*/node_modules/*" ! -path "*/android/*" ! -path "*/www/*" | head -n 1)
-          if [ -z "$HTML" ]; then
-            echo "ERROR: No HTML file found in repo"
-            exit 1
+          if [ -f "www/index.html" ]; then
+            echo "www/index.html already exists, skipping copy"
+          else
+            HTML=$(find . -maxdepth 3 -name "*.html" ! -path "*/node_modules/*" ! -path "*/android/*" ! -path "*/www/*" | head -n 1)
+            if [ -z "$HTML" ]; then
+              echo "ERROR: No HTML file found in repo"
+              exit 1
+            fi
+            echo "Found HTML: $HTML"
+            cp "$HTML" www/index.html
           fi
-          echo "Found HTML: $HTML"
-          cp "$HTML" www/index.html
-          # Copy any supporting files if they exist
           for f in manifest.json sw.js icon-512.png; do
-            FOUND=$(find . -maxdepth 3 -name "$f" ! -path "*/node_modules/*" ! -path "*/android/*" | head -n 1)
+            FOUND=$(find . -maxdepth 3 -name "$f" ! -path "*/node_modules/*" ! -path "*/android/*" ! -path "*/www/*" | head -n 1)
             [ -n "$FOUND" ] && cp "$FOUND" www/ || true
           done
 
