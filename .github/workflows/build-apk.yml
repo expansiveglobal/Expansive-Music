@@ -39,9 +39,18 @@ jobs:
       - name: Prepare www folder
         run: |
           mkdir -p www
-          cp index.html www/
+          # Find the main HTML file wherever it is in the repo
+          HTML=$(find . -maxdepth 3 -name "*.html" ! -path "*/node_modules/*" ! -path "*/android/*" | head -n 1)
+          if [ -z "$HTML" ]; then
+            echo "ERROR: No HTML file found in repo"
+            exit 1
+          fi
+          echo "Found HTML: $HTML"
+          cp "$HTML" www/index.html
+          # Copy any supporting files if they exist
           for f in manifest.json sw.js icon-512.png; do
-            [ -f "$f" ] && cp "$f" www/ || true
+            FOUND=$(find . -maxdepth 3 -name "$f" ! -path "*/node_modules/*" ! -path "*/android/*" | head -n 1)
+            [ -n "$FOUND" ] && cp "$FOUND" www/ || true
           done
 
       - name: Setup Capacitor Android
