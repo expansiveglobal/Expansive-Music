@@ -2,7 +2,7 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
@@ -10,87 +10,56 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Cache Gradle
+        uses: actions/cache@v4
         with:
-          node-version: '20'
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle-
 
-      - name: Install Capacitor dependencies
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Node dependencies
         run: npm install
 
-      - name: Copy web assets into Android project
+      - name: Prepare www folder
         run: |
-          mkdir -p android/app/src/main/assets/public
-          cp www/index.html android/app/src/main/assets/public/index.html
-
-      - name: Download Gradle wrapper jar
-        run: |
-          mkdir -p android/gradle/wrapper
-          curl -o android/gradle/wrapper/gradle-wrapper.jar \
-            https://raw.githubusercontent.com/gradle/gradle/v8.2.1/gradle/wrapper/gradle-wrapper.jar
-
-      - name: Generate keystore
-        run: |
-          keytool -genkeypair \
-            -v \
-            -keystore android/app/release.keystore \
-            -alias "${{ secrets.KEY_ALIAS }}" \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -storepass "${{ secrets.KEY_STORE_PASSWORD }}" \
-            -keypass "${{ secrets.KEY_PASSWORD }}" \
-            -dname "CN=Dolby Player, OU=App, O=DolbyPlayer, L=Unknown, S=Unknown, C=US"
-
-      - name: Install ImageMagick
-        run: sudo apt-get install -y imagemagick
-
-      - name: Generate app icons from source
-        run: |
-          mkdir -p android/app/src/main/res/drawable
-          curl -L "https://drive.google.com/uc?export=download&id=1JftyBNBUgVQ3n-QOq7lz7GqllsB4iB8A" \
-            -o android/app/src/main/res/drawable/ic_launcher_source.png
-          SRC="android/app/src/main/res/drawable/ic_launcher_source.png"
-          declare -A sizes=(
-            [mipmap-mdpi]=48
-            [mipmap-hdpi]=72
-            [mipmap-xhdpi]=96
-            [mipmap-xxhdpi]=144
-            [mipmap-xxxhdpi]=192
-          )
-          for dpi in "${!sizes[@]}"; do
-            size="${sizes[$dpi]}"
-            mkdir -p "android/app/src/main/res/$dpi"
-            convert "$SRC" -resize "${size}x${size}" "android/app/src/main/res/$dpi/ic_launcher.png"
-            convert "$SRC" -resize "${size}x${size}" -alpha set \
-              \( +clone -threshold 50% -negate -morphology Erode Disk:$((size/2)) \) \
-              -compose DstIn -composite \
-              "android/app/src/main/res/$dpi/ic_launcher_round.png"
+          mkdir -p www
+          cp index.html www/
+          for f in manifest.json sw.js icon-512.png; do
+            [ -f "$f" ] && cp "$f" www/ || true
           done
 
-      - name: Make gradlew executable
-        run: chmod +x android/gradlew
+      - name: Setup Capacitor Android
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+          npx cap sync android
 
-      - name: Build release APK
-        working-directory: android
-        env:
-          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: ./gradlew assembleRelease
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: dolby-player-release
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: dolby-player-v${{ github.run_number }}
+          path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
