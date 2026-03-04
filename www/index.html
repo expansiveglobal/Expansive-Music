@@ -582,7 +582,17 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(
 // ══════════════════════════════════════════════════════
 // MASTER
 // ══════════════════════════════════════════════════════
-function toggleMaster(){masterOn=!masterOn;syncUIFromState();if(inited){if(!masterOn)bypassAllDSP();else{applyAllDSP();connectGraph();}}debounceSave();}
+function toggleMaster(){
+  const wasPlaying=!AUD.paused;
+  masterOn=!masterOn;syncUIFromState();
+  if(inited){
+    if(!masterOn)bypassAllDSP();
+    else{applyAllDSP();connectGraph();}
+    if(ACX.state==='suspended')ACX.resume();
+    if(wasPlaying)AUD.play().catch(()=>{});
+  }
+  debounceSave();
+}
 function bypassAllDSP(){
   if(!ACX||!srcNode)return;
   [srcNode,nrNode,...ampedNodes,toneB,toneM,toneT,bassTransNode,bassHarmNode,bassRumbleLPF,bassRumHarm1,bassRumHarm2,
