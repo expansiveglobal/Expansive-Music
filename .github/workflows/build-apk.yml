@@ -57,9 +57,9 @@ jobs:
 
       - name: Setup Capacitor Android
         run: |
-          if [ ! -d "android" ]; then
-            npx cap add android
-          fi
+          # Always remove stale android folder and rebuild fresh
+          rm -rf android
+          npx cap add android
           npx cap sync android
 
       - name: Fix Gradle wrapper
