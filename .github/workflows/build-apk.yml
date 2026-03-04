@@ -40,7 +40,7 @@ jobs:
         run: |
           mkdir -p www
           # Find the main HTML file wherever it is in the repo
-          HTML=$(find . -maxdepth 3 -name "*.html" ! -path "*/node_modules/*" ! -path "*/android/*" | head -n 1)
+          HTML=$(find . -maxdepth 3 -name "*.html" ! -path "*/node_modules/*" ! -path "*/android/*" ! -path "*/www/*" | head -n 1)
           if [ -z "$HTML" ]; then
             echo "ERROR: No HTML file found in repo"
             exit 1
