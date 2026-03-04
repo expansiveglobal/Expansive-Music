@@ -300,7 +300,14 @@ input[type=file]{display:none}
       <div class="s-card" id="sc-drum" style="grid-column:span 2">
         <div class="drum-card">
           <div class="drum-card-title">🎸 Amped · Drum Intensifier — always active with DSP ON</div>
-          <div class="s-desc" style="margin-bottom:14px">High-energy EQ with enhanced kick body, snare crack and transient punch. Tune or zero-out any band.</div>
+          <div class="s-desc" style="margin-bottom:14px">High-energy EQ with enhanced kick body, snare crack and transient punch.</div>
+          <!-- Crispness slider inside Amped -->
+          <div class="s-row" style="margin-bottom:14px">
+            <span class="s-label" style="color:var(--acc2);font-weight:700">Crispness</span>
+            <input type="range" class="s-slider" id="crispnessSl" min="0" max="20" value="10" step="1" oninput="onCrispness(this)">
+            <span class="s-val" id="crispnessV">10</span>
+          </div>
+          <div class="s-desc" style="margin-bottom:14px;margin-top:-6px">7 kHz high shelf — adds definition and air to every instrument.</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
             <div>
               <div class="s-row"><span class="s-label">Kick</span><input type="range" class="s-slider drum-sl" id="drumKickSl" min="0" max="20" value="10" step="1" oninput="onDrumParam()"><span class="s-val" id="drumKickV">10</span></div>
@@ -315,6 +322,33 @@ input[type=file]{display:none}
               <div class="s-desc">Fast attack comp + makeup. Every hit cuts through.</div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- DUBSTEP BASS -->
+      <div class="s-card" id="sc-dub" style="grid-column:span 2">
+        <div class="drum-card-title">🔊 Bass Engine — Dubstep Mode</div>
+        <div class="drum-card" id="dubCard">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <label class="tog"><input type="checkbox" id="dubCheck" onchange="onDubToggle(this)"><div class="tog-sl"></div></label>
+            <span class="tog-label" id="dubLbl" style="color:var(--sub)">Off</span>
+            <style>#dubCheck:checked+.tog-sl{background:var(--acO)!important}</style>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+            <div>
+              <div class="s-row"><span class="s-label">Sub</span><input type="range" class="s-slider drum-sl" id="dubSubSl" min="0" max="20" value="10" step="1" oninput="onDubParam()"><span class="s-val" id="dubSubV">10</span></div>
+              <div class="s-desc">55 Hz low shelf — deep sub foundation without bloat.</div>
+            </div>
+            <div>
+              <div class="s-row"><span class="s-label">Punch</span><input type="range" class="s-slider drum-sl" id="dubPunchSl" min="0" max="20" value="10" step="1" oninput="onDubParam()"><span class="s-val" id="dubPunchV">10</span></div>
+              <div class="s-desc">80 Hz peak — tight kick punch, clean transient hit.</div>
+            </div>
+            <div>
+              <div class="s-row"><span class="s-label">Wobble</span><input type="range" class="s-slider drum-sl" id="dubWobbleSl" min="0" max="20" value="10" step="1" oninput="onDubParam()"><span class="s-val" id="dubWobbleV">10</span></div>
+              <div class="s-desc">160 Hz growl — the characteristic dubstep bass buzz.</div>
+            </div>
+          </div>
+          <div class="s-desc" style="margin-top:10px">Mud cut at 300 Hz always active in this mode — keeps the buzz clean and separated from mids.</div>
         </div>
       </div>
 
@@ -374,18 +408,20 @@ const SR = 96000;
 const AUDIO_EXTS = /\.(mp3|flac|wav|aiff?|ogg|opus|m4a|aac|wma|alac|ape|dsf|wv|mka)$/i;
 
 // Amped EQ — fixed style, always active with DSP
+// Mid-bass cut at 450Hz cleans up mud before dubstep bass layers add back controlled low end
 const AMPED_EQ = [
-  {f:55,  g:6,  q:.7,  t:'lowshelf'},
-  {f:110, g:4,  q:1.5, t:'peaking'},
-  {f:450, g:-2, q:1.5, t:'peaking'},
-  {f:3500,g:3,  q:1.2, t:'peaking'},
-  {f:10e3,g:5,  q:.8,  t:'highshelf'}
+  {f:55,  g:3,  q:.7,  t:'lowshelf'},   // gentle sub foundation (was 6 — too heavy)
+  {f:110, g:2,  q:1.5, t:'peaking'},    // reduced upper-bass body (was 4)
+  {f:450, g:-3, q:1.2, t:'peaking'},    // cut mud/boxiness — cleans up buzz
+  {f:3500,g:3,  q:1.2, t:'peaking'},    // presence/attack
+  {f:10e3,g:4,  q:.8,  t:'highshelf'}   // air/crispness base
 ];
 
 const DEFAULTS = {
   masterOn:false, nrOn:false, nrAmt_:10,
   toneV:{treble:0,mids:0,bass:0},
-  boostLv:10, presence:10,
+  boostLv:10, presence:10, crispness:10,
+  dubOn:false, dubSub:10, dubPunch:10, dubWobble:10,
   crossfadeTime:0, playbackSpeed:1.0,
   ssOn:false, ssSpace:0,
   drumKick:10, drumSnare:10, drumTrans:10
@@ -396,7 +432,16 @@ const AUD = document.getElementById('mainAudio');
 let ACX=null, inited=false;
 let srcNode=null, nrNode=null, ampedNodes=[];
 let toneB=null, toneM=null, toneT=null;
+// Bass: scaled back — controlled sub punch + harmonic body only
 let bassTransNode=null, bassHarmNode=null, bassRumbleLPF=null, bassRumHarm1=null, bassRumHarm2=null;
+// Dubstep bass nodes
+let dubSubNode=null;    // ~50Hz — sub-bass foundation
+let dubPunchNode=null;  // ~80Hz — kick punch layer
+let dubMudCut=null;     // ~300Hz — mud cut for clean separation
+let dubWobbleNode=null; // ~160Hz — wobble/growl character
+let dubCompNode=null;   // fast comp — tightens transients
+let dubMakeup=null;     // makeup gain
+let dubCrispNode=null;  // 8kHz shelf — crispness tied to Amped
 let drumKickNode=null, drumSnareNode=null, drumCompNode=null, drumMakeupGain=null;
 let brightNode=null, clarNode=null, clarNode2=null;
 let compNode=null, balanceNode=null, analyserNode=null, masterGain=null;
@@ -407,7 +452,8 @@ let ssHFShelf=null, ssRGain=null, ssWetGain=null, ssDryGain=null;
 let tracks=[], folders=[], curIdx=-1, doRepeat=false, doShuffle=false;
 let masterOn=false, nrOn=false, nrAmt_=10;
 let toneV={treble:0,mids:0,bass:0};
-let boostLv=10, presence=10;
+let boostLv=10, presence=10, crispness=10;
+let dubOn=false, dubSub=10, dubPunch=10, dubWobble=10;
 let crossfadeTime=0, playbackSpeed=1.0;
 let ssOn=false, ssSpace=0;
 let drumKick=10, drumSnare=10, drumTrans=10;
@@ -417,7 +463,8 @@ let saveDebounce=null, scanCount=0;
 // SETTINGS — IndexedDB
 // ══════════════════════════════════════════════════════
 function gatherSettings(){
-  return{masterOn,nrOn,nrAmt_,toneV:{...toneV},boostLv,presence,
+  return{masterOn,nrOn,nrAmt_,toneV:{...toneV},boostLv,presence,crispness,
+    dubOn,dubSub,dubPunch,dubWobble,
     crossfadeTime,playbackSpeed,ssOn,ssSpace,drumKick,drumSnare,drumTrans};
 }
 function saveSettings(manual=false){
@@ -445,7 +492,8 @@ function applyLoadedSettings(s){
   if(!s)return;
   masterOn=!!s.masterOn;nrOn=!!s.nrOn;nrAmt_=s.nrAmt_??10;
   if(s.toneV)toneV={...s.toneV};
-  boostLv=s.boostLv??10;presence=s.presence??10;
+  boostLv=s.boostLv??10;presence=s.presence??10;crispness=s.crispness??10;
+  dubOn=!!s.dubOn;dubSub=s.dubSub??10;dubPunch=s.dubPunch??10;dubWobble=s.dubWobble??10;
   crossfadeTime=s.crossfadeTime??0;playbackSpeed=s.playbackSpeed??1.0;
   ssOn=!!s.ssOn;ssSpace=s.ssSpace??0;
   drumKick=s.drumKick??10;drumSnare=s.drumSnare??10;drumTrans=s.drumTrans??10;
@@ -479,6 +527,17 @@ function syncUIFromState(){
   document.getElementById('presenceSl').value=presence;document.getElementById('presenceV').textContent=presence;
   setSP(document.getElementById('presenceSl'),presence/20);
   document.getElementById('presenceBar').style.opacity=presence!==10?'.9':'.4';
+  // Crispness
+  document.getElementById('crispnessSl').value=crispness;document.getElementById('crispnessV').textContent=crispness;
+  setSP(document.getElementById('crispnessSl'),crispness/20);
+  // Dubstep bass
+  document.getElementById('dubCheck').checked=dubOn;
+  document.getElementById('dubLbl').textContent=dubOn?'Active':'Off';
+  document.getElementById('dubLbl').style.color=dubOn?'var(--acO)':'var(--sub)';
+  document.getElementById('dubCard').classList.toggle('active',dubOn);
+  document.getElementById('dubSubSl').value=dubSub;document.getElementById('dubSubV').textContent=dubSub;setSPd(document.getElementById('dubSubSl'),dubSub/20);
+  document.getElementById('dubPunchSl').value=dubPunch;document.getElementById('dubPunchV').textContent=dubPunch;setSPd(document.getElementById('dubPunchSl'),dubPunch/20);
+  document.getElementById('dubWobbleSl').value=dubWobble;document.getElementById('dubWobbleV').textContent=dubWobble;setSPd(document.getElementById('dubWobbleSl'),dubWobble/20);
   // Transport
   document.getElementById('crossfadeSl').value=crossfadeTime;document.getElementById('crossfadeV').textContent=crossfadeTime+'s';
   document.getElementById('speedSl').value=playbackSpeed;document.getElementById('speedV').textContent=playbackSpeed.toFixed(2)+'×';
@@ -527,6 +586,7 @@ function toggleMaster(){masterOn=!masterOn;syncUIFromState();if(inited){if(!mast
 function bypassAllDSP(){
   if(!ACX||!srcNode)return;
   [srcNode,nrNode,...ampedNodes,toneB,toneM,toneT,bassTransNode,bassHarmNode,bassRumbleLPF,bassRumHarm1,bassRumHarm2,
+   dubSubNode,dubPunchNode,dubMudCut,dubWobbleNode,dubCompNode,dubMakeup,dubCrispNode,
    drumKickNode,drumSnareNode,drumCompNode,drumMakeupGain,brightNode,clarNode,clarNode2,
    compNode,balanceNode,ssSplitter,ssLGain,ssHaas,ssHFShelf,ssRGain,ssMerger,ssWetGain,ssDryGain,analyserNode,masterGain]
   .forEach(n=>{if(n)try{n.disconnect();}catch(e){}});
@@ -605,8 +665,9 @@ function connectGraph(){
   pipe(nrNode);
   ampedNodes.forEach(f=>{n.connect(f);n=f;});
   pipe(toneB,bassRumbleLPF,bassRumHarm1,bassRumHarm2,bassTransNode,bassHarmNode);
+  pipe(dubSubNode,dubPunchNode,dubMudCut,dubWobbleNode,dubCompNode,dubMakeup);
   pipe(drumKickNode,drumSnareNode,drumCompNode,drumMakeupGain);
-  pipe(toneM,toneT,brightNode,clarNode,clarNode2,compNode,balanceNode);
+  pipe(toneM,toneT,dubCrispNode,brightNode,clarNode,clarNode2,compNode,balanceNode);
 
   if(ssOn&&ssSpace>0){
     n.connect(ssDryGain);ssDryGain.connect(analyserNode);
@@ -632,17 +693,48 @@ function applyAllDSP(){
   toneT.gain.setTargetAtTime(toneV.treble*.75,t,.02);
   applyBassEnhancement(toneV.bass);
   applyBoostDSP(boostLv);
+  applyDubDSP();
   applyDrumDSP();
   applyPresenceDSP();
+  applyCrispness();
   if(ssOn)applySSParam();
 }
 function applyNR(){if(!nrNode)return;nrNode.frequency.value=nrOn?20+(nrAmt_/20)*220:20;nrNode.Q.value=nrOn?.6+(nrAmt_/20)*2:.1;}
 function applyBassEnhancement(lv){
   if(!bassTransNode)return;
+  // Significantly reduced gains — dubstep nodes now handle the heavy lifting
   const t=ACX.currentTime,pos=Math.max(0,lv/20),neg=Math.max(0,-lv/20);
-  bassTransNode.gain.setTargetAtTime(pos*4.5,t,.02);bassHarmNode.gain.setTargetAtTime(pos*3.0,t,.02);
-  bassRumbleLPF.gain.setTargetAtTime(pos*3.5-neg*2,t,.02);
-  bassRumHarm1.gain.setTargetAtTime(neg>0?0:pos*2.5,t,.02);bassRumHarm2.gain.setTargetAtTime(neg>0?0:pos*1.8,t,.02);
+  bassTransNode.gain.setTargetAtTime(pos*2.0,t,.02);  // was 4.5
+  bassHarmNode.gain.setTargetAtTime(pos*1.5,t,.02);   // was 3.0
+  bassRumbleLPF.gain.setTargetAtTime(pos*1.5-neg*2,t,.02); // was 3.5
+  bassRumHarm1.gain.setTargetAtTime(neg>0?0:pos*1.0,t,.02);// was 2.5
+  bassRumHarm2.gain.setTargetAtTime(neg>0?0:pos*.8,t,.02); // was 1.8
+}
+function applyDubDSP(){
+  if(!dubSubNode)return;const t=ACX.currentTime;
+  if(dubOn){
+    // Sub: clean low shelf — tight foundation, not bloated
+    dubSubNode.gain.setTargetAtTime((dubSub/10-1)*6,t,.02);       // −6 to +6 dB
+    // Punch: narrow peak at 80Hz — kick transient definition
+    dubPunchNode.gain.setTargetAtTime((dubPunch/10-1)*8,t,.02);   // −8 to +8 dB
+    // Mud cut: always active when dub is on — keeps buzz clean
+    dubMudCut.gain.setTargetAtTime(-3,t,.02);
+    // Wobble: 160Hz growl — the dubstep character
+    dubWobbleNode.gain.setTargetAtTime((dubWobble/10-1)*7,t,.02); // −7 to +7 dB
+    // Compressor tightens the sub so it punches instead of bloating
+    dubCompNode.threshold.value=-28;dubCompNode.ratio.value=5;
+    dubCompNode.attack.value=.003;dubCompNode.release.value=.15;
+    dubMakeup.gain.setTargetAtTime(1.4,t,.02);
+  }else{
+    dubSubNode.gain.setTargetAtTime(0,t,.02);dubPunchNode.gain.setTargetAtTime(0,t,.02);
+    dubMudCut.gain.setTargetAtTime(0,t,.02);dubWobbleNode.gain.setTargetAtTime(0,t,.02);
+    dubCompNode.threshold.value=-100;dubCompNode.ratio.value=1;
+    dubMakeup.gain.setTargetAtTime(1,t,.02);
+  }
+}
+function applyCrispness(){
+  if(!dubCrispNode)return;
+  dubCrispNode.gain.setTargetAtTime((crispness-10)*1.2,ACX.currentTime,.02); // −12 to +12 dB at 7kHz
 }
 function applyBoostDSP(lv){
   if(!compNode)return;const t=lv/20;
@@ -682,6 +774,14 @@ function onTone(band,el){
 }
 function onBoost(el){boostLv=+el.value;document.getElementById('boostV').textContent=boostLv;document.getElementById('boostBar').style.width=(boostLv/20*100)+'%';setSP(el,boostLv/20);if(masterOn)applyBoostDSP(boostLv);debounceSave();}
 function onPresence(el){presence=+el.value;document.getElementById('presenceV').textContent=presence;setSP(el,presence/20);document.getElementById('presenceBar').style.opacity=presence!==10?'.9':'.4';if(inited&&masterOn)applyPresenceDSP();debounceSave();}
+function onCrispness(el){crispness=+el.value;document.getElementById('crispnessV').textContent=crispness;setSP(el,crispness/20);if(inited&&masterOn)applyCrispness();debounceSave();}
+function onDubToggle(cb){dubOn=cb.checked;document.getElementById('dubLbl').textContent=dubOn?'Active':'Off';document.getElementById('dubLbl').style.color=dubOn?'var(--acO)':'var(--sub)';document.getElementById('dubCard').classList.toggle('active',dubOn);if(inited&&masterOn)applyDubDSP();debounceSave();}
+function onDubParam(){
+  dubSub=+document.getElementById('dubSubSl').value;dubPunch=+document.getElementById('dubPunchSl').value;dubWobble=+document.getElementById('dubWobbleSl').value;
+  document.getElementById('dubSubV').textContent=dubSub;document.getElementById('dubPunchV').textContent=dubPunch;document.getElementById('dubWobbleV').textContent=dubWobble;
+  setSPd(document.getElementById('dubSubSl'),dubSub/20);setSPd(document.getElementById('dubPunchSl'),dubPunch/20);setSPd(document.getElementById('dubWobbleSl'),dubWobble/20);
+  if(inited&&masterOn)applyDubDSP();debounceSave();
+}
 function onDrumParam(){
   drumKick=+document.getElementById('drumKickSl').value;drumSnare=+document.getElementById('drumSnareSl').value;drumTrans=+document.getElementById('drumTransSl').value;
   document.getElementById('drumKickV').textContent=drumKick;document.getElementById('drumSnareV').textContent=drumSnare;document.getElementById('drumTransV').textContent=drumTrans;
@@ -845,7 +945,7 @@ function setSPI(el,r){if(el)el.style.setProperty('--p',Math.max(0,Math.min(100,r
   else{
     ['sc-nr','sc-tone','sc-boost','sc-presence','sc-drum'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('disabled');});
     document.getElementById('immCard').style.opacity='0.5';document.getElementById('immCard').style.pointerEvents='none';
-    ['nrAmtSl','boostSl','presenceSl'].forEach(id=>{const el=document.getElementById(id);if(el)setSP(el,+el.value/(+el.max||20));});
+    ['nrAmtSl','boostSl','presenceSl','crispnessSl'].forEach(id=>{const el=document.getElementById(id);if(el)setSP(el,+el.value/(+el.max||20));});
     ['drumKickSl','drumSnareSl','drumTransSl'].forEach(id=>{const el=document.getElementById(id);if(el)setSPd(el,+el.value/20);});
     setSPI(document.getElementById('ssSpace'),0);updateSSMeter();
   }
