@@ -62,10 +62,20 @@ jobs:
           fi
           npx cap sync android
 
+      - name: Fix Gradle wrapper
+        run: |
+          cd android
+          # Download the gradle wrapper jar if missing
+          mkdir -p gradle/wrapper
+          if [ ! -f "gradle/wrapper/gradle-wrapper.jar" ]; then
+            curl -sL "https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar" \
+              -o gradle/wrapper/gradle-wrapper.jar
+          fi
+          chmod +x gradlew
+
       - name: Build debug APK
         run: |
           cd android
-          chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
